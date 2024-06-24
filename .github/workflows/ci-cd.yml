@@ -24,35 +24,22 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install Bundler and Dependencies
+        run: |
+          gem install bundler --no-document
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
       - name: Verify Node.js version
         run: node --version 
 
-      # Build Jekyll site
       - name: Build Jekyll
         run: |
-          gem install bundler --no-document
-          bundle install
-          bundle exec jekyll build --destination _site  # Build to the root directory
+          bundle exec jekyll build --destination _site
 
-      # Deploy to production (example command, replace with your deployment script)
-      - name: Deploy to production
-        run: |
-          echo "Deploying..."
-          # Replace this with your actual deployment commands
-
-      # Example: Deploying to GitHub Pages
-      # - name: Deploy to GitHub Pages
-      #   uses: JamesIves/github-pages-deploy-action@4.1.1
-      #   with:
-      #     branch: gh-pages
-      #     folder: _site  # Deploy from root _site directory
-      #     token: ${{ secrets.GH_PAT }}
-
-      # Example: Deploying to a server via SSH
-      # - name: Deploy to server
-      #   uses: easingthemes/ssh-deploy@v2.0.0
-      #   with:
-      #     server: ${{ secrets.SERVER_IP }}
-      #     username: ${{ secrets.SERVER_USER }}
-      #     password: ${{ secrets.SERVER_PASSWORD }}
-      #     script: 'cd /path/to/deploy && ./deploy.sh'
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: _site
+          token: ${{ secrets.GH_PAT }}
