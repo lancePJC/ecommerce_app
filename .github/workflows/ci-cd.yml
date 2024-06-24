@@ -1,30 +1,26 @@
-name: Github Page Deploy
+name: GitHub Pages Deploy
 
 on:
   push:
     branches:
-      - lance-ecom 
+      - lance-ecom
 
 jobs:
   build:
     runs-on: ubuntu-latest
- 
-    strategy: 
-      matrix:
-        node-version: [15.x]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Install and build
-        run: npm install && npm run build
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
 
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
           branch: gh-pages
-          folder: build
-          token: ${{ secrets.GH_PAT}}
-          
-       
+          folder: build  # Update to match your build output directory
+          token: ${{ secrets.GH_PAT }}
