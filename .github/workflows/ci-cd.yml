@@ -9,7 +9,7 @@ on:
       - lance-ecom
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,30 +32,12 @@ jobs:
       - name: Lint code
         run: npx eslint .
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/lance-ecom'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
       - name: Deploy to production
+        if: github.ref == 'refs/heads/lance-ecom'
         env:
           NODE_ENV: production
         run: |
-          # Add your deployment script/command here
           echo "Deploying application..."
+          # Add your deployment script/command here
           # Example: scp files to your server
           # scp -r . user@your-server:/path/to/deploy
