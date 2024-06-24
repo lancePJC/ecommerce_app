@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+package-lock.json   # Exclude package-lock.json from being tracked by Git
 
 # Editor directories and files
 .vscode/*
@@ -22,7 +23,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Allow package-lock.json
-# Uncomment the following line to include package-lock.json
-# !package-lock.json
