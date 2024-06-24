@@ -1,10 +1,10 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import postcss from 'postcss';
 import tailwindcss from 'tailwindcss';
 
 export default defineConfig({
+  base: '/ecommerce_app/', // Adjust the base path as needed
   plugins: [react()],
   server: {
     watch: {
