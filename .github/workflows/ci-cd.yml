@@ -1,43 +1,30 @@
-name: CI/CD Pipeline
+name: Github Page Deploy
 
 on:
   push:
     branches:
-      - lance-ecom
-  pull_request:
-    branches:
-      - lance-ecom
+      - lance-ecom 
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+ 
+    strategy: 
+      matrix:
+        node-version: [15.x]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install and build
+        run: npm install && npm run build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
-          token: ${{ secrets.GH_PAT }}  # Use the GitHub Actions token here
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
-
-      - name: Lint code
-        run: npx eslint .
-
-      - name: Deploy to production
-        if: github.ref == 'refs/heads/lance-ecom'
-        env:
-          NODE_ENV: production
-        run: |
-          echo "Deploying application..."
-          # Add your deployment script/command here
-          # Example: scp files to your server
-          # scp -r . user@your-server:/path/to/deploy
+          branch: gh-pages
+          folder: build
+          token: ${{ secrets.GH_PAT}}
+          
+       
