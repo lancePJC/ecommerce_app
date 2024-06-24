@@ -1,4 +1,4 @@
-name: GitHub Pages Deploy
+name: CI/CD Pipeline
 
 on:
   push:
@@ -11,16 +11,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Make sure to use the latest version
 
-      - name: Install dependencies and build
-        run: |
-          npm install
-          npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          branch: gh-pages
-          folder: build  # Update to match your build output directory
-          token: ${{ secrets.GH_PAT }}
+          node-version: '14'  # Adjust the Node.js version as per your project requirements
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build  # Replace with your build script if different
+
+      - name: Run tests
+        run: npm test  # Replace with your test script if different
+
+      - name: Lint code
+        run: npx eslint .  # Replace with your linting command if different
