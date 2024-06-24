@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ secrets.GH_PAT }}  # Use the GitHub Actions token here
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
