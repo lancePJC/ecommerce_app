@@ -27,8 +27,32 @@ jobs:
       - name: Verify Node.js version
         run: node --version 
 
-      # Add your deployment steps here
+      # Build Jekyll site
+      - name: Build Jekyll
+        run: |
+          gem install bundler --no-document
+          bundle install
+          bundle exec jekyll build --destination _site  # Build to the root directory
+
+      # Deploy to production (example command, replace with your deployment script)
       - name: Deploy to production
         run: |
           echo "Deploying..."
-          # Add your deployment script or commands here
+          # Replace this with your actual deployment commands
+
+      # Example: Deploying to GitHub Pages
+      # - name: Deploy to GitHub Pages
+      #   uses: JamesIves/github-pages-deploy-action@4.1.1
+      #   with:
+      #     branch: gh-pages
+      #     folder: _site  # Deploy from root _site directory
+      #     token: ${{ secrets.GH_PAT }}
+
+      # Example: Deploying to a server via SSH
+      # - name: Deploy to server
+      #   uses: easingthemes/ssh-deploy@v2.0.0
+      #   with:
+      #     server: ${{ secrets.SERVER_IP }}
+      #     username: ${{ secrets.SERVER_USER }}
+      #     password: ${{ secrets.SERVER_PASSWORD }}
+      #     script: 'cd /path/to/deploy && ./deploy.sh'
