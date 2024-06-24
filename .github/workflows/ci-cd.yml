@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Deployment
 
 on:
   push:
@@ -6,26 +6,29 @@ on:
       - lance-ecom
 
 jobs:
-  build:
+  deployment:
     runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: production
+      cancel-in-progress: true
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2  # Make sure to use the latest version
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
-          node-version: '14'  # Adjust the Node.js version as per your project requirements
+          token: ${{ secrets.GH_PAT }}
 
-      - name: Install dependencies
-        run: npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-      - name: Build project
-        run: npm run build  # Replace with your build script if different
+      - name: Verify Node.js version
+        run: node --version 
 
-      - name: Run tests
-        run: npm test  # Replace with your test script if different
-
-      - name: Lint code
-        run: npx eslint .  # Replace with your linting command if different
+      # Add your deployment steps here
+      - name: Deploy to production
+        run: |
+          echo "Deploying..."
+          # Add your deployment script or commands here
